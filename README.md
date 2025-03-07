@@ -7,4 +7,4 @@ This project is going to be completed by:
 - Kyla Marie Goff-Tutson
 - Tristan Anjelo Miranda Galang
 
-Two main games are Bejeweled and CandyCrush. 
+Two main games are Bejeweled and 2048. 
