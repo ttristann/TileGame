@@ -1,4 +1,4 @@
-package org.example.tilegame;
+package tgme;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

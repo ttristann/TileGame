@@ -1,4 +1,4 @@
-package org.example.tilegame;
+package tgme;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -1,8 +1,8 @@
-module org.example.tilegame {
+module tgme {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens org.example.tilegame to javafx.fxml;
-    exports org.example.tilegame;
+    opens tgme to javafx.fxml;
+    exports tgme;
 }
