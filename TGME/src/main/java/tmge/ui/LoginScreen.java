@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,7 +24,6 @@ public class LoginScreen {
 
     public void show(Stage primaryStage) {
         primaryStage.setTitle("TMGE - Login");
-
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -36,17 +34,17 @@ public class LoginScreen {
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(sceneTitle, 0, 0, 2, 1);
 
-        Label userName = new Label("User Name:");
+        Label userName = new Label("Username:");
         grid.add(userName, 0, 1);
 
         TextField userTextField = new TextField();
         grid.add(userTextField, 1, 1);
 
-        Label pw = new Label("Password:");
-        grid.add(pw, 0, 2);
-
-        PasswordField pwBox = new PasswordField();
-        grid.add(pwBox, 1, 2);
+//        Label pw = new Label("Password:");
+//        grid.add(pw, 0, 2);
+//
+//        PasswordField pwBox = new PasswordField();
+//        grid.add(pwBox, 1, 2);
 
         Button loginBtn = new Button("Sign in");
         HBox hbBtn = new HBox(10);
@@ -65,9 +63,9 @@ public class LoginScreen {
 
         loginBtn.setOnAction(e -> {
             String username = userTextField.getText();
-            String password = pwBox.getText();
+//            String password = pwBox.getText();
 
-            User user = userManager.login(username, password);
+            User user = userManager.login(username);
             if (user != null) {
                 actionTarget.setText("Login successful!");
                 showGameSelection(primaryStage);
@@ -78,9 +76,9 @@ public class LoginScreen {
 
         registerBtn.setOnAction(e -> {
             String username = userTextField.getText();
-            String password = pwBox.getText();
+//            String password = pwBox.getText();
 
-            User user = userManager.registerUser(username, password);
+            User user = userManager.registerUser(username);
             if (user != null) {
                 actionTarget.setText("Registration successful!");
             } else {

@@ -22,7 +22,7 @@ public class GameManager {
         // Convert Users to Players
         players.clear();
         for (User user : users) {
-            Player player = new Player(user.getUsername(), user.getPassword()); // may not need password
+            Player player = new Player(user.getUsername()); // may not need password
             player.setGameHistory(user.getGameStats(gameType));
             players.add(player);
         }

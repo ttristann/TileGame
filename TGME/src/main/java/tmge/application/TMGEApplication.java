@@ -43,12 +43,12 @@ public class TMGEApplication extends Application {
         // TODO: Show game selection screen
     }
 
-    public void login(String username, String password) {
-        userManager.login(username, password); // may not need password
+    public void login(String username) {
+        userManager.login(username); // may not need password
     }
 
-    public void registerUser(String username, String password) {
-        userManager.registerUser(username, password);
+    public void registerUser(String username) {
+        userManager.registerUser(username);
     }
 
     public static void main(String[] args) {

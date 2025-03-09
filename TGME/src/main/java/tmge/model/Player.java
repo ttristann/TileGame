@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Player {
     private String username;
-    private String password; // may not need this for a simple login process
+    // private String password; // may not need this for a simple login process
     private GameStats gameHistory;
     private List<String> gameStats;
 
-    public Player(String username, String password) {
+    public Player(String username) {
         this.username = username;
-        this.password = password;
+        // this.password = password;
         this.gameStats = new ArrayList<>();
     }
 
