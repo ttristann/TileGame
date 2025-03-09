@@ -1,4 +1,4 @@
-package tgme;
+package tmge;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

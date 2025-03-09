@@ -1,8 +1,8 @@
-module tgme {
+module tmge {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens tgme to javafx.fxml;
-    exports tgme;
+    opens tmge to javafx.fxml;
+    exports tmge;
 }

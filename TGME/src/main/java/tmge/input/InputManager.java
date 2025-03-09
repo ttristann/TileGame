@@ -1,4 +1,4 @@
-package tgme.input;
+package tmge.input;
 
 public class InputManager {
 }

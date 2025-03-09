@@ -1,4 +1,4 @@
-package tgme;
+package tmge;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
