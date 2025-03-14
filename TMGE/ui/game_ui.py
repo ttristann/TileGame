@@ -4,6 +4,7 @@ from typing import Dict, Any, Callable, Optional
 
 from core.board import Board
 from core.player import Player
+from games.bejeweled.bejeweled_game import BejeweledGame
 # from core import GameState
 
 
@@ -29,6 +30,10 @@ class GameUI:
         # Game Board
         self.canvas = tk.Canvas(self.frame, width=300, height=300, bg="white")
         self.canvas.pack(pady=10)
+        
+        # **Button to start Bejeweled**
+        self.bejeweled_button = ttk.Button(self.frame, text="Play Bejeweled", command=self.start_bejeweled)
+        self.bejeweled_button.pack(pady=5)
 
         # Exit Button
         self.exit_button = ttk.Button(self.frame, text="Exit", command=self.exit_game)
@@ -49,6 +54,11 @@ class GameUI:
                 self.canvas.create_rectangle(x1, y1, x2, y2, outline="black")
                 
         # self.canvas.update()
+    def start_bejeweled(self):
+        """Initialize and render the Bejeweled game."""
+        self.game = BejeweledGame(width=8, height=8)
+        self.render_board(self.game.board)
+
 
     def update_score(self, score: int):
         """Update the displayed score."""
