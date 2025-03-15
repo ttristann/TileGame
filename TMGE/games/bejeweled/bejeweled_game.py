@@ -72,6 +72,11 @@ class BejeweledGame:
         time.sleep(0.3)  # Small delay for animation effect
         self.remove_matches()
 
+        # Check if there are any valid moves left
+        if not self.has_valid_moves():
+            self.state = GameState.OVER
+            print("Game Over! No valid moves left.")
+
         return True  # Matches found and cleared
 
     def find_matches(self):
