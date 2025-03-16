@@ -4,6 +4,7 @@ from typing import Dict, Any, Callable, Optional
 from core.board import Board
 from core.player import Player
 from games.bejeweled.bejeweled_game import BejeweledGame
+from games.game2048.game2048_game import Game2048
 import time
 
 
@@ -40,9 +41,13 @@ class GameUI:
         self.canvas.pack(pady=10)
         self.canvas.bind("<Button-1>", self.on_tile_click)  # Click to select/swap tiles
 
-        # Play Button
+        # Play Button for Bejeweled
         self.play_button = ttk.Button(self.frame, text="Start Bejeweled", command=self.start_bejeweled)
         self.play_button.pack(pady=5)
+
+        # Play Button for 2048 
+        self.play_2048_button = ttk.Button(self.frame, text="Start 2048", command=self.start_game2048)
+        self.play_2048_button.pack(pady=5)
 
         # Exit Button
         self.exit_button = ttk.Button(self.frame, text="Exit", command=self.exit_game)
@@ -60,6 +65,37 @@ class GameUI:
             
         # Reset the game state
         self.game = BejeweledGame(width=8, height=8)
+        self.time_left = 60
+        self.timer_active = True
+        
+        # Reset score
+        self.game.score = 0
+        self.update_score(0)
+        
+        # Make sure the timer label is visible now
+        self.timer_label.config(text=f"Time Left: {self.time_left}s")
+        
+        # Only pack the timer if it's not already visible
+        if not self.timer_visible:
+            self.timer_label.pack(after=self.title_label, pady=5)
+            self.timer_visible = True
+        
+        # Render the board
+        self.render_board()
+        
+        # Start the countdown
+        self.update_timer()
+
+    def start_game2048(self):
+        """Initialize and start the 2048 game."""
+        print("Starting 2048...")
+        
+        # Cancel any existing timer
+        if self.timer_id:
+            self.root.after_cancel(self.timer_id)
+        
+        # Reset the game state
+        self.game = Game2048()
         self.time_left = 60
         self.timer_active = True
         

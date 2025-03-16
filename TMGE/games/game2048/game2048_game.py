@@ -1,6 +1,6 @@
 import tkinter as tk
-from game2048_board import Game2048Board
-from game2048_tile import CELL_COLORS, CELL_NUMBER_COLORS, GRID_COLOR, EMPTY_CELL_COLOR, FONT
+from games.game2048.game2048_board import Game2048Board
+from games.game2048.game2048_tile import CELL_COLORS, CELL_NUMBER_COLORS, GRID_COLOR, EMPTY_CELL_COLOR, FONT
 
 class Game2048:
     def __init__(self):
