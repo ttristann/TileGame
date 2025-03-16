@@ -10,7 +10,7 @@ import time
 
 class GameUI:
     def __init__(self, root, on_exit_game):
-        """Bejeweled Game UI with a title, score display, and game board."""
+        """Main Game UI with options to start different games."""
         self.root = root
         self.on_exit_game = on_exit_game
         self.selected_tile = None  # Track the first selected tile for swapping
@@ -24,7 +24,7 @@ class GameUI:
         self.frame.pack(padx=20, pady=20, fill=tk.BOTH, expand=True)
 
         # Title
-        self.title_label = tk.Label(self.frame, text="Bejeweled", font=("Arial", 16, "bold"))
+        self.title_label = tk.Label(self.frame, text="Game Menu", font=("Arial", 16, "bold"))
         self.title_label.pack(pady=5)
 
         # Timer Display (created but not packed initially)
@@ -45,9 +45,9 @@ class GameUI:
         self.play_button = ttk.Button(self.frame, text="Start Bejeweled", command=self.start_bejeweled)
         self.play_button.pack(pady=5)
 
-        # Play Button for 2048 
-        self.play_2048_button = ttk.Button(self.frame, text="Start 2048", command=self.start_game2048)
-        self.play_2048_button.pack(pady=5)
+        # Play Button for 2048
+        self.play_button_2048 = ttk.Button(self.frame, text="Start 2048", command=self.start_game2048)
+        self.play_button_2048.pack(pady=5)
 
         # Exit Button
         self.exit_button = ttk.Button(self.frame, text="Exit", command=self.exit_game)
@@ -56,72 +56,55 @@ class GameUI:
     def start_bejeweled(self):
         """Initialize and start the Bejeweled game with a timer."""
         print("Starting Bejeweled...")
-        
+
+        self.title_label.config(text="Bejeweled")
         self.timer_label.pack(pady=5)
         self.start_time = time.time()
         # Cancel any existing timer
         if self.timer_id:
             self.root.after_cancel(self.timer_id)
-            
+
         # Reset the game state
         self.game = BejeweledGame(width=8, height=8)
         self.time_left = 60
         self.timer_active = True
-        
+
         # Reset score
         self.game.score = 0
         self.update_score(0)
-        
+
         # Make sure the timer label is visible now
         self.timer_label.config(text=f"Time Left: {self.time_left}s")
-        
+
         # Only pack the timer if it's not already visible
         if not self.timer_visible:
             self.timer_label.pack(after=self.title_label, pady=5)
             self.timer_visible = True
-        
+
         # Render the board
         self.render_board()
-        
+
         # Start the countdown
         self.update_timer()
 
     def start_game2048(self):
         """Initialize and start the 2048 game."""
         print("Starting 2048...")
-        
-        # Cancel any existing timer
-        if self.timer_id:
-            self.root.after_cancel(self.timer_id)
-        
-        # Reset the game state
-        self.game = Game2048()
-        self.time_left = 60
-        self.timer_active = True
-        
-        # Reset score
-        self.game.score = 0
-        self.update_score(0)
-        
-        # Make sure the timer label is visible now
-        self.timer_label.config(text=f"Time Left: {self.time_left}s")
-        
-        # Only pack the timer if it's not already visible
-        if not self.timer_visible:
-            self.timer_label.pack(after=self.title_label, pady=5)
-            self.timer_visible = True
-        
-        # Render the board
-        self.render_board()
-        
-        # Start the countdown
-        self.update_timer()
+
+        # Clear the existing canvas
+        self.canvas.delete("all")
+
+        # Title
+        self.title_label.config(text="2048")
+
+        # Initialize the 2048 game
+        self.game2048 = Game2048(self.frame, self.canvas)
 
     def update_timer(self):
         """Update the timer every second."""
         if not self.timer_active:
             return
-            
+
         if self.time_left > 0:
             self.timer_label.config(text=f"Time Left: {self.time_left}s")
             self.time_left -= 1
@@ -137,17 +120,17 @@ class GameUI:
         self.canvas.unbind("<Button-1>")  # Disable further moves
         self.game.state = "OVER"
         print("Game over! Final score:", self.game.score)
-        
+
         # Show game over message
         messagebox.showinfo("Game Over", f"Time's up! Your final score is: {self.game.score}")
 
     def render_board(self):
         """Render the game board with colors and update UI dynamically."""
         self.canvas.delete("all")
-        
+
         if not hasattr(self, "game") or not self.game:
             return
-            
+
         rows, cols = self.game.board.height, self.game.board.width
         cell_width = self.canvas.winfo_width() // cols
         cell_height = self.canvas.winfo_height() // rows
@@ -261,27 +244,5 @@ class GameUI:
         self.score_label.config(text=f"Score: {score}")
 
     def exit_game(self):
-        """Exit game callback."""
-        # Cancel any active timer
-        if self.timer_id:
-            self.root.after_cancel(self.timer_id)
-            self.timer_active = False
-        
-        # Hide the timer if it's visible
-        if self.timer_visible:
-            self.timer_label.pack_forget()
-            self.timer_visible = False
-            
-        self.frame.pack_forget()
-        self.on_exit_game()
-
-
-# Testing the UI
-if __name__ == "__main__":
-    # cd TMGE
-    # python3 -m ui.game_ui
-    root = tk.Tk()
-    root.title("Simple TMGE UI")
-    board = Board(5, 5)
-    ui = GameUI(root, on_exit_game=root.quit)
-    root.mainloop()
+        """Exit main game callback."""
+        self.root.quit()
