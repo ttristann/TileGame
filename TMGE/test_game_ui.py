@@ -16,6 +16,7 @@ def main():
     # player1 = welcome_screen.user_manager.players[0].username
     # player2 = welcome_screen.user_manager.players[1].username
     # print(f"Player 1: {player1}, Player 2: {player2}")
+    # testing purposes 
 
 
 if __name__ == "__main__":
