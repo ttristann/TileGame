@@ -166,7 +166,8 @@ class GameUI:
         self.current_player_index = player_index
         if player_index >= len(self.users):
             # If all players have played, return to the menu
-            self.return_to_menu()
+            self.determine_winner("Bejeweled")
+            # self.return_to_menu()
             return
 
         self.reset_game_ui()
@@ -205,10 +206,10 @@ class GameUI:
 
         # Render the board
         self.render_board()
+            
         # Show messagebox for the current player and start timer **only after closing the popup**
         self.root.after(500, lambda: self.show_start_popup(player_index, "Bejeweled"))
         
-
     def show_start_popup(self, player_index, game_type):
         """Show the popup and start the timer only after the player acknowledges it."""
         messagebox.showinfo(f"Player {player_index + 1}", "Press OK to start!")
@@ -222,14 +223,36 @@ class GameUI:
             self.root.after((self.time_left + 1) * 1000, lambda: self.start_bejeweled(player_index + 1))
         elif game_type == "2048":
             self.root.after((self.time_left + 1) * 1000, lambda: self.start_game2048(player_index + 1))
-            
+
+        # if both players have played, their scores should be updated and then compare the scores
+        # whoever has the higher score should be the winner and then return to the menu
       
+    def determine_winner(self, game_type):
+        """Determine and display the winner after all players have played."""
+        winner = max(self.users, key=lambda user: user.score)  # Get player with the highest score
+        winning_score = winner.score
+
+        # Get players with the same highest score in case of a tie
+        tied_players = [user.username for user in self.users if user.score == winning_score]
+
+        if len(tied_players) > 1:
+            result_message = f"The game ended in a tie! Players: {', '.join(tied_players)} with {winning_score} points."
+        else:
+            result_message = f"The winner is {winner.username} with {winning_score} points!"
+
+        # Display the winner
+        messagebox.showinfo(f"{game_type} Winner!", result_message)
+
+        # Return to menu after showing the winner
+        self.return_to_menu()
+        
     def start_game2048(self, player_index=0):
         """Initialize and start the 2048 game for each player sequentially."""
         self.current_player_index = player_index
         if player_index >= len(self.users):
             # If all players have played, return to the menu
-            self.return_to_menu()
+            # self.return_to_menu()
+            self.determine_winner("2048")
             return
 
         self.reset_game_ui()
@@ -262,41 +285,6 @@ class GameUI:
         self.root.game_ui = self
         # Show messagebox for the current player and start timer **only after closing the popup**
         self.root.after(500, lambda: self.show_start_popup(player_index, "2048"))
-        
-
-        
-
-        
-    # def start_game2048(self):
-    #     self.reset_game_ui()
-    #     """Initialize and start the 2048 game."""
-    #     print("Starting 2048...")
-
-   
-    #     # self.canvas.delete("all")
-
-    #     # Title
-    #     self.title_label.config(text="2048")
-        
-        
-    #     self.game = None  
-    #     self.canvas.unbind("<Button-1>")
-        
-    #     # Enable the timer for 2048
-    #     self.time_left = 10
-    #     self.timer_active = True
-    #     self.timer_label.config(text=f"Time Left: {self.time_left}s")
-
-    #     # Show the timer
-    #     self.timer_label.pack(after=self.title_label, pady=5)
-        
-    #     # Start the countdown
-    #     self.update_timer()
-
-    #     # Initialize the 2048 game
-    #     self.game2048 = Game2048(self.frame, self.canvas)
-        
-    #     self.root.game_ui = self
         
 
     def update_timer(self):
@@ -443,7 +431,7 @@ class GameUI:
 
         def finish_fall():
             for tile_rect, x, y in animations:
-                self.canvas.delete(tile_rect)
+                self.canvas.delete(tile_rect) 
             callback()
 
         self.root.after(300, finish_fall)
