@@ -71,9 +71,7 @@ class Game2048:
         if self.game_over:
             return
         
-        previous_score = self.score
 
-        moved = False
         if direction == "Up":
             moved = self.board.move_tiles(up=True, left=False)
         elif direction == "Down":
