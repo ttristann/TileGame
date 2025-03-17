@@ -18,6 +18,11 @@ class GameUI:
         self.timer_active = False
         self.timer_id = None  # To keep track of the timer callback
         self.timer_visible = False  # Track if timer is currently visible
+        # self.current_player = 1
+        # self.player_scores = {1: 0, 2: 0}
+        # self.user_manager = user_manager  # Store user manager
+        self.current_player_index = 0  # Start with Player 1
+        self.scores = {0: 0, 1: 0}  # Track scores for both players
 
         # Main frame
         self.frame = tk.Frame(root)
@@ -101,8 +106,6 @@ class GameUI:
         # Start the countdown
         self.update_timer()
 
-
-
         
 
     def start_bejeweled(self):
@@ -174,6 +177,8 @@ class GameUI:
         # Initialize the 2048 game
         self.game2048 = Game2048(self.frame, self.canvas)
         
+        self.root.game_ui = self
+        
 
     def update_timer(self):
         """Update the timer every second."""
@@ -187,17 +192,25 @@ class GameUI:
             self.timer_id = self.root.after(1000, self.update_timer)
         else:
             self.end_game()
-
+            
     def end_game(self):
-        """Handle game over logic."""
+        """Handle game over logic when the timer ends."""
         self.timer_active = False
         self.timer_label.config(text="Time's up!")
-        self.canvas.unbind("<Button-1>")  # Disable further moves
-        self.game.state = "OVER"
-        print("Game over! Final score:", self.game.score)
+        self.canvas.unbind("<Button-1>") 
 
-        # Show game over message
-        messagebox.showinfo("Game Over", f"Time's up! Your final score is: {self.game.score}")
+        final_score = 0
+
+        if self.game2048:
+            self.game2048.game_over = True 
+            final_score = self.game2048.board.score
+        elif self.game:
+            self.game.state = "OVER"
+            final_score = self.game.score
+
+        print("Game over! Final score:", final_score)
+
+        self.root.after(100, lambda: messagebox.showinfo("Game Over", f"Time's up! Your final score is: {final_score}"))
 
     def render_board(self):
         """Render the game board with colors and update UI dynamically."""
@@ -316,7 +329,8 @@ class GameUI:
 
     def update_score(self, score):
         """Update the displayed score."""
-        self.score_label.config(text=f"Score: {score}")
+        if self.timer_active:
+            self.score_label.config(text=f"Score: {score}")
 
     def exit_game(self):
         """Exit main game callback."""

@@ -8,7 +8,6 @@ class Game2048:
         self.parent_canvas = parent_canvas
         self.board = Game2048Board()
         self.game_over = False
-        self.score = 0
 
         self.cells = [[None] * 4 for _ in range(4)]
         
@@ -35,6 +34,9 @@ class Game2048:
                 label = tk.Label(cell, text="", font=FONT, width=4, height=2)
                 label.pack(expand=True)
                 self.cells[row][col] = label
+                
+    def update_score(self, points):
+        self.score += points
 
     def create_control_buttons(self):
         """Create arrow buttons to move tiles."""
@@ -71,7 +73,7 @@ class Game2048:
         if self.game_over:
             return
         
-
+        moved = False
         if direction == "Up":
             moved = self.board.move_tiles(up=True, left=False)
         elif direction == "Down":
@@ -84,11 +86,17 @@ class Game2048:
         if moved:
             self.board.spawn_tile()
             self.update_grid()
+            
+            if not self.game_over:
+                self.parent_frame.winfo_toplevel().game_ui.update_score(self.board.score)
+
+            
+            
             if self.board.is_game_over():
                 self.display_game_over()
 
     def display_game_over(self):
         """Display a game-over message."""
         self.game_over = True
-        game_over_label = tk.Label(self.parent_frame, text="Game Over!", font=("Verdana", 20, "bold"), bg="red", fg="white")
-        game_over_label.pack(pady=10)
+        # game_over_label = tk.Label(self.parent_frame, text="Game Over!", font=("Verdana", 20, "bold"), bg="red", fg="white")
+        # game_over_label.pack(pady=10)
