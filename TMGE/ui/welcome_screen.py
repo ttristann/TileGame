@@ -8,6 +8,9 @@ class Player:
         self.username = username
         self.score = 0
 
+    def get_username(self):
+        return self.username
+
 class UserManager:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
@@ -45,12 +48,14 @@ class WelcomeScreen:
             self.user_manager = UserManager(Player(player1), Player(player2))
             messagebox.showinfo("Login Success", f"Players: {player1} and {player2}")
             self.frame.pack_forget()
-            self.start_game()
+            player1 = self.user_manager.players[0].username # testing
+            player2 = self.user_manager.players[1].username # testing 
+            self.start_game([player1, player2])
         else:
             messagebox.showerror("Error", "Please enter usernames for both players.")
     
-    def start_game(self):
-        self.game_ui = GameUI(self.master, on_exit_game=self.master.quit)
+    def start_game(self, users):
+        self.game_ui = GameUI(self.master, users, on_exit_game=self.master.quit)
         self.master.mainloop()
         
     def show(self):

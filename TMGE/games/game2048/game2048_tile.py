@@ -11,6 +11,6 @@ CELL_NUMBER_COLORS = {
     1024: "#ffffff", 2048: "#ffffff"
 }
 
-GRID_COLOR = "#2e2e2e"  # Darker, modern-looking grid
-EMPTY_CELL_COLOR = "#4b4b4b"  # Darker background for contrast
+GRID_COLOR = "#2e2e2e" 
+EMPTY_CELL_COLOR = "#4b4b4b" 
 FONT = ("Verdana", 24, "bold")
