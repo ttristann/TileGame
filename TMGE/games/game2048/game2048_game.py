@@ -1,65 +1,58 @@
 import tkinter as tk
-from games.game2048.game2048_board import Game2048Board
-from games.game2048.game2048_tile import CELL_COLORS, CELL_NUMBER_COLORS, GRID_COLOR, EMPTY_CELL_COLOR, FONT
+import sys
+import os
 
-class Game2048:
-    def __init__(self, parent_frame, parent_canvas):
-        self.parent_frame = parent_frame
-        self.parent_canvas = parent_canvas
+# ✅ Fix ImportError by adding the parent directory to `sys.path`
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+
+# Now import the board correctly
+from game2048_board import Game2048Board  # ✅ FIXED
+from game2048_tile import CELL_COLORS, CELL_NUMBER_COLORS, GRID_COLOR, EMPTY_CELL_COLOR, FONT  # ✅ FIXED
+
+class Game2048UI:
+    def __init__(self, root):
+        """Initialize the UI for 2048."""
+        self.root = root
+        self.root.title("2048 Game")
         self.board = Game2048Board()
-        self.game_over = False
 
+        # Create main frame
+        self.frame = tk.Frame(root, padx=20, pady=20, bg="gray")
+        self.frame.pack()
+
+        # Create grid for displaying numbers
         self.cells = [[None] * 4 for _ in range(4)]
         self.init_grid()
         self.update_grid()
 
-        self.create_control_buttons()
+        # Capture keyboard input
+        self.root.bind("<Up>", lambda event: self.handle_move("Up"))
+        self.root.bind("<Down>", lambda event: self.handle_move("Down"))
+        self.root.bind("<Left>", lambda event: self.handle_move("Left"))
+        self.root.bind("<Right>", lambda event: self.handle_move("Right"))
 
     def init_grid(self):
-        """Initialize the 2048 game grid."""
+        """Create grid UI elements."""
         for row in range(4):
             for col in range(4):
-                cell = tk.Frame(self.parent_canvas, bg=EMPTY_CELL_COLOR, width=100, height=100)
+                cell = tk.Label(self.frame, text="", font=("Arial", 20, "bold"),
+                                width=4, height=2, bg="lightgray", relief="ridge")
                 cell.grid(row=row, column=col, padx=5, pady=5)
-                label = tk.Label(cell, text="", font=FONT, width=4, height=2)
-                label.pack(expand=True)
-                self.cells[row][col] = label
-
-    def create_control_buttons(self):
-        """Create arrow buttons to move tiles."""
-        button_frame = tk.Frame(self.parent_frame)
-        button_frame.pack(pady=10)
-
-        up_button = tk.Button(button_frame, text="▲", font=("Arial", 16), width=5, height=2, command=lambda: self.handle_move("Up"))
-        left_button = tk.Button(button_frame, text="◀", font=("Arial", 16), width=5, height=2, command=lambda: self.handle_move("Left"))
-        right_button = tk.Button(button_frame, text="▶", font=("Arial", 16), width=5, height=2, command=lambda: self.handle_move("Right"))
-        down_button = tk.Button(button_frame, text="▼", font=("Arial", 16), width=5, height=2, command=lambda: self.handle_move("Down"))
-
-        up_button.grid(row=0, column=1)
-        left_button.grid(row=1, column=0)
-        right_button.grid(row=1, column=2)
-        down_button.grid(row=2, column=1)
+                self.cells[row][col] = cell
 
     def update_grid(self):
-        """Update the UI grid based on the matrix values."""
+        """Update grid UI with the current board state."""
         for row in range(4):
             for col in range(4):
                 value = self.board.matrix[row][col]
-                cell_label = self.cells[row][col]
+                cell = self.cells[row][col]
                 if value == 0:
-                    cell_label.config(text="", bg=EMPTY_CELL_COLOR)
+                    cell.config(text="", bg="lightgray")
                 else:
-                    cell_label.config(
-                        text=str(value),
-                        bg=CELL_COLORS.get(value, "#3c3a32"),
-                        fg=CELL_NUMBER_COLORS.get(value, "#f9f6f2")
-                    )
+                    cell.config(text=str(value), bg="gold", fg="black")
 
     def handle_move(self, direction):
-        """Handle tile movement based on button clicks."""
-        if self.game_over:
-            return
-
+        """Handle tile movement and update UI."""
         moved = False
         if direction == "Up":
             moved = self.board.move_tiles(up=True, left=False)
@@ -77,7 +70,11 @@ class Game2048:
                 self.display_game_over()
 
     def display_game_over(self):
-        """Display a game-over message."""
-        self.game_over = True
-        game_over_label = tk.Label(self.parent_frame, text="Game Over!", font=("Verdana", 20, "bold"), bg="red", fg="white")
-        game_over_label.pack(pady=10)
+        """Show game-over message."""
+        game_over_label = tk.Label(self.frame, text="Game Over!", font=("Verdana", 20, "bold"), bg="red", fg="white")
+        game_over_label.grid(row=4, column=0, columnspan=4, pady=10)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    game_ui = Game2048UI(root)
+    root.mainloop()
