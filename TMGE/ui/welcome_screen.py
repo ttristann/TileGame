@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
+from ui.game_ui import GameUI  
+
 
 class Player:
     def __init__(self, username):
@@ -14,6 +16,9 @@ class WelcomeScreen:
     def __init__(self, master):
         self.master = master
         self.user_manager = None
+        
+        self.master.geometry("600x900")
+        # self.master.resizable(False, False)
         
         self.frame = tk.Frame(master)
         self.setup_ui()
@@ -39,9 +44,15 @@ class WelcomeScreen:
         if player1 and player2:
             self.user_manager = UserManager(Player(player1), Player(player2))
             messagebox.showinfo("Login Success", f"Players: {player1} and {player2}")
+            self.frame.pack_forget()
+            self.start_game()
         else:
             messagebox.showerror("Error", "Please enter usernames for both players.")
     
+    def start_game(self):
+        self.game_ui = GameUI(self.master, on_exit_game=self.master.quit)
+        self.master.mainloop()
+        
     def show(self):
         self.frame.pack(fill=tk.BOTH, expand=True)
     

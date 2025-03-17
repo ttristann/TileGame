@@ -98,5 +98,3 @@ class Game2048:
     def display_game_over(self):
         """Display a game-over message."""
         self.game_over = True
-        # game_over_label = tk.Label(self.parent_frame, text="Game Over!", font=("Verdana", 20, "bold"), bg="red", fg="white")
-        # game_over_label.pack(pady=10)

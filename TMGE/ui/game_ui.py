@@ -128,7 +128,7 @@ class GameUI:
         self.timer_active = True
 
         # Reset score
-        self.game.score = 0
+        self.game.score = 0 
         self.update_score(0)
         
         self.canvas.bind("<Button-1>", self.on_tile_click)
@@ -335,3 +335,5 @@ class GameUI:
     def exit_game(self):
         """Exit main game callback."""
         self.root.quit()
+        
+        

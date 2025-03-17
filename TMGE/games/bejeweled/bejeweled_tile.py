@@ -2,8 +2,8 @@ import random
 from core.tile import Tile
 
 class BejeweledTile(Tile):
-    COLORS = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"]
-
+    COLORS = ["#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9", "#BAE1FF", "#D7BAFF"]
+    
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.color = random.choice(self.COLORS)
