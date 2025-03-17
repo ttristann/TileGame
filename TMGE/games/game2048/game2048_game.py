@@ -10,10 +10,20 @@ class Game2048:
         self.game_over = False
 
         self.cells = [[None] * 4 for _ in range(4)]
+        
+        self.clear_previous_game()
+
         self.init_grid()
         self.update_grid()
 
         self.create_control_buttons()
+        
+    def clear_previous_game(self):
+        """Clear the canvas and destroy any previous widgets before starting 2048."""
+        self.parent_canvas.delete("all")  # Remove Bejeweled graphics
+        for widget in self.parent_frame.winfo_children():
+            if isinstance(widget, tk.Frame):  # Destroy previous game elements
+                widget.destroy()
 
     def init_grid(self):
         """Initialize the 2048 game grid."""

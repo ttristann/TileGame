@@ -52,13 +52,68 @@ class GameUI:
         # Exit Button
         self.exit_button = ttk.Button(self.frame, text="Exit", command=self.exit_game)
         self.exit_button.pack(pady=5)
+        
+    def reset_game_ui(self):
+        """Resets the game UI before launching a new game."""
+        self.canvas.delete("all")  # Clear Bejeweled board elements
+
+        # Destroy all game-related frames (including 2048 grid & buttons)
+        for widget in self.frame.winfo_children():
+            if widget not in [self.title_label, self.timer_label, self.score_label, self.canvas, 
+                            self.play_button, self.play_button_2048, self.exit_button]:
+                widget.destroy()
+
+        # Destroy all child widgets of `self.canvas`, which may have 2048’s grid elements
+        for widget in self.canvas.winfo_children():
+            widget.destroy()
+
+        # Reset text elements
+        self.score_label.config(text="Score: 0")  
+        self.title_label.config(text="Game Menu")  
+        self.timer_label.pack_forget()  # Hide timer (only show for Bejeweled)
+
+        # Stop the timer if it's running
+        self.timer_active = False
+        if self.timer_id:
+            self.root.after_cancel(self.timer_id)
+
+        # Unbind previous event listeners (important for switching from Bejeweled to 2048)
+        self.canvas.unbind("<Button-1>")
+
+        # Remove previous game instances
+        self.game = None  
+        self.game2048 = None  
+        
+        
+    def start_timer(self):
+        """Initialize and display the timer."""
+        self.time_left = 60  
+        self.timer_active = True
+
+        # Cancel any existing timer
+        if self.timer_id:
+            self.root.after_cancel(self.timer_id)
+
+        # Ensure the timer label is updated and shown
+        self.timer_label.config(text=f"Time Left: {self.time_left}s")
+        self.timer_label.pack(pady=5)
+
+        # Start the countdown
+        self.update_timer()
+
+
+
+        
 
     def start_bejeweled(self):
+        self.reset_game_ui()
         """Initialize and start the Bejeweled game with a timer."""
+        
         print("Starting Bejeweled...")
+        
 
         self.title_label.config(text="Bejeweled")
-        self.timer_label.pack(pady=5)
+        self.timer_label.pack(after=self.title_label, pady=5)
         self.start_time = time.time()
         # Cancel any existing timer
         if self.timer_id:
@@ -72,6 +127,8 @@ class GameUI:
         # Reset score
         self.game.score = 0
         self.update_score(0)
+        
+        self.canvas.bind("<Button-1>", self.on_tile_click)
 
         # Make sure the timer label is visible now
         self.timer_label.config(text=f"Time Left: {self.time_left}s")
@@ -81,6 +138,7 @@ class GameUI:
             self.timer_label.pack(after=self.title_label, pady=5)
             self.timer_visible = True
 
+
         # Render the board
         self.render_board()
 
@@ -88,17 +146,34 @@ class GameUI:
         self.update_timer()
 
     def start_game2048(self):
+        self.reset_game_ui()
         """Initialize and start the 2048 game."""
         print("Starting 2048...")
 
-        # Clear the existing canvas
-        self.canvas.delete("all")
+   
+        # self.canvas.delete("all")
 
         # Title
         self.title_label.config(text="2048")
+        
+        
+        self.game = None  
+        self.canvas.unbind("<Button-1>")
+        
+        # Enable the timer for 2048
+        self.time_left = 60  
+        self.timer_active = True
+        self.timer_label.config(text=f"Time Left: {self.time_left}s")
+
+        # Show the timer
+        self.timer_label.pack(after=self.title_label, pady=5)
+        
+        # Start the countdown
+        self.update_timer()
 
         # Initialize the 2048 game
         self.game2048 = Game2048(self.frame, self.canvas)
+        
 
     def update_timer(self):
         """Update the timer every second."""

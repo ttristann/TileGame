@@ -1,14 +1,19 @@
 import tkinter as tk
 from tkinter import messagebox
 
+class Player:
+    def __init__(self, username):
+        self.username = username
+        self.score = 0
+
 class UserManager:
-    def __init__(self):
-        self.players = []
+    def __init__(self, player1, player2):
+        self.players = [player1, player2]
 
 class WelcomeScreen:
-    def __init__(self, master, user_manager):
+    def __init__(self, master):
         self.master = master
-        self.user_manager = user_manager
+        self.user_manager = None
         
         self.frame = tk.Frame(master)
         self.setup_ui()
@@ -32,7 +37,7 @@ class WelcomeScreen:
         player2 = self.player2_entry.get()
 
         if player1 and player2:
-            self.user_manager.players = [player1, player2]
+            self.user_manager = UserManager(Player(player1), Player(player2))
             messagebox.showinfo("Login Success", f"Players: {player1} and {player2}")
         else:
             messagebox.showerror("Error", "Please enter usernames for both players.")
@@ -47,8 +52,8 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("500x500")
 
-    user_manager = UserManager()
-    welcome_screen = WelcomeScreen(root, user_manager)
+    # user_manager = UserManager()
+    welcome_screen = WelcomeScreen(root)
     welcome_screen.show()
 
     root.mainloop()
