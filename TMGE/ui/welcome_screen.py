@@ -52,7 +52,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("500x500")
 
-    # user_manager = UserManager()
+    # user_manager = UserManager() d 
     welcome_screen = WelcomeScreen(root)
     welcome_screen.show()
 

@@ -8,6 +8,7 @@ class Game2048:
         self.parent_canvas = parent_canvas
         self.board = Game2048Board()
         self.game_over = False
+        self.score = 0
 
         self.cells = [[None] * 4 for _ in range(4)]
         
@@ -69,6 +70,8 @@ class Game2048:
         """Handle tile movement based on button clicks."""
         if self.game_over:
             return
+        
+        previous_score = self.score
 
         moved = False
         if direction == "Up":
