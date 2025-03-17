@@ -45,7 +45,8 @@ class GameUI:
         self.score_label.pack(pady=5)
         
         for user in users:
-            self.user_label = tk.Label(self.frame, text=f"{user} - Score: {0}", font=("Arial", 12))
+            # print(f'username: {user.username} and ')
+            self.user_label = tk.Label(self.frame, text=f"{user.username} - Score: {user.score}", font=("Arial", 12))
             self.user_label.pack(pady=5)
 
         # Game Board Canvas
@@ -96,6 +97,7 @@ class GameUI:
         # Remove previous game instances
         self.game = None  
         self.game2048 = None  
+        self.current_game = None
         
         if hasattr(self, 'play_button'):
             self.play_button.pack_forget()
@@ -137,7 +139,7 @@ class GameUI:
         # Re-add player labels
         self.user_labels = []
         for user in self.users:
-            label = tk.Label(self.frame, text=f"{user} - Score: {0}", font=("Arial", 12))
+            label = tk.Label(self.frame, text=f"{user.username} - Score: {user.score}", font=("Arial", 12))
             label.pack(pady=5)
             self.user_labels.append(label)
 
@@ -158,25 +160,34 @@ class GameUI:
         self.exit_button.pack(pady=5)
 
         print("Returned to main menu and reinitialized UI")
+        
+    def start_bejeweled(self, player_index=0):
+        """Initialize and start the Bejeweled game for each player sequentially."""
+        self.current_player_index = player_index
+        if player_index >= len(self.users):
+            # If all players have played, return to the menu
+            self.return_to_menu()
+            return
 
-    def start_bejeweled(self):
         self.reset_game_ui()
-        """Initialize and start the Bejeweled game with a timer."""
         
-        print("Starting Bejeweled...")
-        
+        print(f"Starting Bejeweled for Player {player_index + 1}...")
 
-        self.title_label.config(text="Bejeweled")
+        # Update Title with Player Info
+        self.title_label.config(text=f"Bejeweled - Player {player_index + 1}")
+
+        # Show timer
         self.timer_label.pack(after=self.title_label, pady=5)
         self.start_time = time.time()
+
         # Cancel any existing timer
         if self.timer_id:
             self.root.after_cancel(self.timer_id)
 
         # Reset the game state
         self.game = BejeweledGame(width=8, height=8)
-        self.time_left = 3
-        self.timer_active = True
+        self.time_left = 10  # Change back to 60 for full game
+        self.timer_active = False  # Timer should not start until player presses "OK"
 
         # Reset score
         self.game.score = 0 
@@ -184,7 +195,7 @@ class GameUI:
         
         self.canvas.bind("<Button-1>", self.on_tile_click)
 
-        # Make sure the timer label is visible now
+        # Make sure the timer label is visible
         self.timer_label.config(text=f"Time Left: {self.time_left}s")
 
         # Only pack the timer if it's not already visible
@@ -192,43 +203,100 @@ class GameUI:
             self.timer_label.pack(after=self.title_label, pady=5)
             self.timer_visible = True
 
-
         # Render the board
         self.render_board()
+        # Show messagebox for the current player and start timer **only after closing the popup**
+        self.root.after(500, lambda: self.show_start_popup(player_index, "Bejeweled"))
+        
 
-        # Start the countdown
+    def show_start_popup(self, player_index, game_type):
+        """Show the popup and start the timer only after the player acknowledges it."""
+        messagebox.showinfo(f"Player {player_index + 1}", "Press OK to start!")
+        
+        # Now that the player has acknowledged, start the timer
+        self.timer_active = True
         self.update_timer()
 
-    def start_game2048(self):
+        # Move to the next player when time runs out
+        if game_type == "Bejeweled":
+            self.root.after((self.time_left + 1) * 1000, lambda: self.start_bejeweled(player_index + 1))
+        elif game_type == "2048":
+            self.root.after((self.time_left + 1) * 1000, lambda: self.start_game2048(player_index + 1))
+            
+      
+    def start_game2048(self, player_index=0):
+        """Initialize and start the 2048 game for each player sequentially."""
+        self.current_player_index = player_index
+        if player_index >= len(self.users):
+            # If all players have played, return to the menu
+            self.return_to_menu()
+            return
+
         self.reset_game_ui()
-        """Initialize and start the 2048 game."""
-        print("Starting 2048...")
+
+        print(f"Starting 2048 for Player {player_index + 1}...")
+
+        # Update Title with Player Info
+        self.title_label.config(text=f"2048 - Player {player_index + 1}")
+
+        # Show timer (but don't start yet)
+        self.timer_label.pack(after=self.title_label, pady=5)
+
+        # Cancel any existing timer
+        if self.timer_id:
+            self.root.after_cancel(self.timer_id)
+
+        # Reset the game state
+        self.game2048 = Game2048(self.frame, self.canvas)
+        self.time_left = 10  # Change back to 60 for full game
+        self.timer_active = False  # Timer should not start until player presses "OK"
+
+        # Make sure the timer label is visible
+        self.timer_label.config(text=f"Time Left: {self.time_left}s")
+        
+        self.game2048.board.score = 0
+        self.update_score(self.game2048.board.score)
+
+        # Render the board (if needed)
+        self.canvas.unbind("<Button-1>")
+        self.root.game_ui = self
+        # Show messagebox for the current player and start timer **only after closing the popup**
+        self.root.after(500, lambda: self.show_start_popup(player_index, "2048"))
+        
+
+        
+
+        
+    # def start_game2048(self):
+    #     self.reset_game_ui()
+    #     """Initialize and start the 2048 game."""
+    #     print("Starting 2048...")
 
    
-        # self.canvas.delete("all")
+    #     # self.canvas.delete("all")
 
-        # Title
-        self.title_label.config(text="2048")
+    #     # Title
+    #     self.title_label.config(text="2048")
         
         
-        self.game = None  
-        self.canvas.unbind("<Button-1>")
+    #     self.game = None  
+    #     self.canvas.unbind("<Button-1>")
         
-        # Enable the timer for 2048
-        self.time_left = 3
-        self.timer_active = True
-        self.timer_label.config(text=f"Time Left: {self.time_left}s")
+    #     # Enable the timer for 2048
+    #     self.time_left = 10
+    #     self.timer_active = True
+    #     self.timer_label.config(text=f"Time Left: {self.time_left}s")
 
-        # Show the timer
-        self.timer_label.pack(after=self.title_label, pady=5)
+    #     # Show the timer
+    #     self.timer_label.pack(after=self.title_label, pady=5)
         
-        # Start the countdown
-        self.update_timer()
+    #     # Start the countdown
+    #     self.update_timer()
 
-        # Initialize the 2048 game
-        self.game2048 = Game2048(self.frame, self.canvas)
+    #     # Initialize the 2048 game
+    #     self.game2048 = Game2048(self.frame, self.canvas)
         
-        self.root.game_ui = self
+    #     self.root.game_ui = self
         
 
     def update_timer(self):
@@ -259,15 +327,11 @@ class GameUI:
             self.game.state = "OVER"
             final_score = self.game.score
 
-
         print("Game over! Final score:", final_score)
         
         messagebox.showinfo("Game Over", f"Time's up! Your final score is: {final_score}")
         self.root.after(1, self.return_to_menu)
 
-        # self.root.after(100, lambda: messagebox.showinfo("Game Over", f"Time's up! Your final score is: {final_score}"))
-
-        # go back to the initial game menu after a delay
 
     def render_board(self):
         """Render the game board with colors and update UI dynamically."""
@@ -387,7 +451,8 @@ class GameUI:
     def update_score(self, score):
         """Update the displayed score."""
         if self.timer_active:
-            self.score_label.config(text=f"Score: {score}")
+            self.score_label.config(text=f"Score: {score}") 
+            self.users[self.current_player_index].score = score
 
     def exit_game(self):
         """Exit main game callback."""

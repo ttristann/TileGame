@@ -48,8 +48,8 @@ class WelcomeScreen:
             self.user_manager = UserManager(Player(player1), Player(player2))
             messagebox.showinfo("Login Success", f"Players: {player1} and {player2}")
             self.frame.pack_forget()
-            player1 = self.user_manager.players[0].username # testing
-            player2 = self.user_manager.players[1].username # testing 
+            player1 = self.user_manager.players[0] # testing
+            player2 = self.user_manager.players[1] # testing 
             self.start_game([player1, player2])
         else:
             messagebox.showerror("Error", "Please enter usernames for both players.")

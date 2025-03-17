@@ -8,6 +8,7 @@ class Game2048:
         self.parent_canvas = parent_canvas
         self.board = Game2048Board()
         self.game_over = False
+        self.score = 0
 
         self.cells = [[None] * 4 for _ in range(4)]
         
@@ -37,6 +38,7 @@ class Game2048:
                 
     def update_score(self, points):
         self.score += points
+        self.parent_frame.winfo_toplevel().game_ui.update_score(self.score)
 
     def create_control_buttons(self):
         """Create arrow buttons to move tiles."""
@@ -88,7 +90,8 @@ class Game2048:
             self.update_grid()
             
             if not self.game_over:
-                self.parent_frame.winfo_toplevel().game_ui.update_score(self.board.score)
+                self.score = self.board.score
+                self.parent_frame.winfo_toplevel().game_ui.update_score(self.score)
 
             
             
