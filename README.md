@@ -36,9 +36,7 @@ git clone <repository-url>
     python3 test_game_ui.py
     ```
 
- Make sure to run using **python3** otherwise the game might not render properly.
+    Make sure to run using **python3** otherwise the game might not render properly.
 
-## Notes
-- The project is currently optimized Python3.
 
 
