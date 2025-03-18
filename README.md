@@ -30,7 +30,13 @@ git clone <repository-url>
 ### Running the Project
 1. Open the project and navigate to the repository.
 1. Ensure **Python3** is properly configured in your project settings.
-1. Run the script `python3 test_game_ui.py` in the terminal. Make sure to run using **python3** otherwise the game might not render properly.
+1. Run the following command in the terminal:
+
+    ```
+    python3 test_game_ui.py
+    ```
+
+ Make sure to run using **python3** otherwise the game might not render properly.
 
 ## Notes
 - The project is currently optimized Python3.
