@@ -9,16 +9,18 @@ This project is being developed by:
 - **Tristan Anjelo Miranda Galang**
 
 ## Project Overview
-This project focuses on the development of two popular puzzle games:
+This project focuses on developing two popular puzzle games with a competitive 2-player mode:
 - **Bejeweled** – A classic tile-matching puzzle game.
 - **2048** – A sliding tile puzzle game where players combine numbers to reach 2048.
+
+Each player takes turns playing for 10 seconds, and the player with the highest score at the end wins. This adds a fast-paced, competitive twist to both games!
 
 ## Getting Started
 To successfully run and develop this project, follow these steps:
 
 ### Prerequisites
-- Install **IntelliJ IDEA** (recommended IDE)
-- Download and set up **JavaFX** on your local machine
+- Install **VS Code** (recommended IDE)
+- Download and set up **Python3** on your local machine
 
 ### Cloning the Repository
 ```sh
@@ -26,12 +28,11 @@ git clone <repository-url>
 ```
 
 ### Running the Project
-1. Open the project in **IntelliJ IDEA**.
-2. Ensure **JavaFX** is properly configured in your project settings.
-3. Run the application from IntelliJ.
+1. Open the project and navigate to the repository.
+1. Ensure **Python3** is properly configured in your project settings.
+1. Run the script `python3 test_game_ui.py` in the terminal. Make sure to run using **python3** otherwise the game might not render properly.
 
 ## Notes
-- The project is currently optimized for IntelliJ IDEA.
-- JavaFX must be installed on your local machine for the project to function properly.
+- The project is currently optimized Python3.
 
 
