@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, Optional
+from typing import Optional
 from .user import User
 
 class UserManager:
@@ -16,7 +16,7 @@ class UserManager:
     
     def register(self, username: str, password: str) -> Optional[User]:
         if username in self.users:
-            return None  # User already exists
+            return None  
         
         user = User(username, password)
         self.users[username] = user
@@ -27,8 +27,6 @@ class UserManager:
         return self.users.get(username)
     
     def save_user_data(self) -> None:
-        # In a real app, implement proper serialization and storage
-        # This is a simplified version
         data = {username: {"password_hash": user.password_hash} for username, user in self.users.items()}
         os.makedirs('data', exist_ok=True)
         with open('data/users.json', 'w') as f:

@@ -1,6 +1,6 @@
 import tkinter as tk
 from games.game2048.game2048_board import Game2048Board
-from games.game2048.game2048_tile import CELL_COLORS, CELL_NUMBER_COLORS, GRID_COLOR, EMPTY_CELL_COLOR, FONT
+from games.game2048.game2048_tile import CELL_COLORS, CELL_NUMBER_COLORS, EMPTY_CELL_COLOR, FONT
 
 class Game2048:
     def __init__(self, parent_frame, parent_canvas):
@@ -21,9 +21,9 @@ class Game2048:
         
     def clear_previous_game(self):
         """Clear the canvas and destroy any previous widgets before starting 2048."""
-        self.parent_canvas.delete("all")  # Remove Bejeweled graphics
+        self.parent_canvas.delete("all")  
         for widget in self.parent_frame.winfo_children():
-            if isinstance(widget, tk.Frame):  # Destroy previous game elements
+            if isinstance(widget, tk.Frame):  
                 widget.destroy()
 
     def init_grid(self):
@@ -99,5 +99,4 @@ class Game2048:
                 self.display_game_over()
 
     def display_game_over(self):
-        """Display a game-over message."""
         self.game_over = True

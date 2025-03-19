@@ -10,5 +10,4 @@ class GameManager:
         self.current_game.initialize()
     
     def load_players(self):
-        # Load player data from storage
         return self.players

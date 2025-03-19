@@ -20,8 +20,8 @@ class BejeweledBoard(Board):
             for x in range(self.width):
                 tile = self.get_tile(x, y)
                 if tile:
-                    row_data.append((tile.color.lower(), tile.render()))  # (color, text)
+                    row_data.append((tile.color.lower(), tile.render()))  
                 else:
-                    row_data.append(("white", ""))  # Empty tile
+                    row_data.append(("white", ""))  
             render_data.append(row_data)
-        return render_data  # Returns a grid of (color, text) tuples
+        return render_data 

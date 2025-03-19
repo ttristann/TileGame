@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-# from typing import List
 from game_state import GameState
 
 class IGame(ABC):

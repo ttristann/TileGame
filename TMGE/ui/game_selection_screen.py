@@ -1,10 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from typing import List, Callable, Dict, Any
-
-# from tmge.registry.game_info import GameInfo
+from typing import List, Callable
 from registry import GameRegistry
-
 from user import User
 
 
@@ -93,7 +90,6 @@ class GameSelectionScreen:
         
         for i in selected_indices:
             player_name = self.player_listbox.get(i)
-            # In a real implementation, you'd retrieve the actual User object
             players.append(player_name)
         
         return players

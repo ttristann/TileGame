@@ -8,9 +8,8 @@ class BejeweledTile(Tile):
         self.color = random.choice(self.COLORS)
 
     def render(self):
-        return self.color[0]  # Display the first letter of the color
+        return self.color[0] 
 
     def move(self, new_x: int, new_y: int):
-        """Implements the required abstract method from Tile."""
         self.x = new_x
         self.y = new_y

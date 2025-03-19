@@ -1,5 +1,3 @@
-# from abc import ABC, abstractmethod
-# from typing import List, Optional
 from enum import Enum
 
 class Direction(Enum):
