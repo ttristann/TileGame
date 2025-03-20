@@ -33,7 +33,7 @@ git clone <repository-url>
 1. Run the following command in the terminal:
 
     ```
-    python3 test_game_ui.py
+    python3 main.py
     ```
 
     Make sure to run using **python3** otherwise the game might not render properly.
