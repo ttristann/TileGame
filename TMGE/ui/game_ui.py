@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from typing import Dict, Any, Callable, Optional
-from core.board import Board
-from core.player import Player
+from TMGE.core.board import Board
+from TMGE.core.player import Player
 from games.bejeweled.bejeweled_game import BejeweledGame
 from games.game2048.game2048_game import Game2048
 import time

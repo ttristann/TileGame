@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from ui.game_ui import GameUI  
+from TMGE.ui.game_ui import GameUI  
 
 
 class Player:
