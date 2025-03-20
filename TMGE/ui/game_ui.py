@@ -165,7 +165,7 @@ class GameUI:
 
         # Reset the game state
         self.game = BejeweledGame(width=8, height=8)
-        self.time_left = 10  # Change back to 60 for full game
+        self.time_left = 30  # Change back to 60 for full game
         self.timer_active = False
 
         # Reset score
@@ -227,7 +227,7 @@ class GameUI:
             self.root.after_cancel(self.timer_id)
             
         self.game2048 = Game2048(self.frame, self.canvas)
-        self.time_left = 10  # Change back to 60 for full game
+        self.time_left = 30  # Change back to 60 for full game
         self.timer_active = False  
 
         self.timer_label.config(text=f"Time Left: {self.time_left}s")
